@@ -62,8 +62,23 @@ function extrairNoticiasLocais() {
   }
   return noticias;
 }
+
+function opcoesParaVoce() {
+  const noticias = [];
+  const elementosNoticias = document.querySelectorAll(".sQBzPb")[0].childNodes;
+  for (const elementoNoticia of elementosNoticias) {
+    const titulo = elementoNoticia.querySelector(".JtKRv")?.innerText || "";
+    const link = elementoNoticia.querySelector(".JtKRv")?.href || "";
+    const horario = elementoNoticia.querySelector(".hvbAAd")?.innerText || "";
+
+    if (titulo.length > 0 && link.length > 0 && horario.length > 0)
+      noticias.push({ titulo, link, horario });
+  }
+  return noticias;
+}
 const dadosPrincipais = {
   principaisNoticias: extrairPrincipaisNoticias(),
   noticiasLocais: extrairNoticiasLocais(),
+  recomendados: opcoesParaVoce(),
 };
 console.log(dadosPrincipais);
