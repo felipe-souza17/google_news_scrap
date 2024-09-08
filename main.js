@@ -6,27 +6,49 @@
  */
 
 /**
- * Extrai informações de notícias de um contêiner do Google Notícias.
- * @param {string} containerSelector Seletor CSS do contêiner de notícias.
+ * Extrai informações das principais notícias do Google Notícias.
  * @returns {Array} Array de objetos de notícias.
  */
-function extrairNoticias(containerSelector) {
+function extrairPrincipaisNoticias() {
   const noticias = [];
-  const elementosNoticias = document.querySelectorAll(
-    `${containerSelector} > *:not(:last-child)`
+  const elementosNoticias = document.querySelectorAll(".KDoq1");
+  const elementosSubNoticias = document.querySelectorAll(
+    ".f9uzM  *:not(:last-child)"
   );
 
+  /**
+   * Noticias principais
+   */
   for (const elementoNoticia of elementosNoticias) {
-    const titulo = elementoNoticia.querySelector(".JtKRv")?.innerText || "";
-    const link = elementoNoticia.querySelector(".JtKRv")?.href || "";
+    const titulo =
+      elementoNoticia.querySelector(".JtKRv")?.innerText ||
+      elementoNoticia.querySelector(".gPFEn")?.innerText ||
+      "";
+    const link =
+      elementoNoticia.querySelector(".JtKRv")?.href ||
+      elementoNoticia.querySelector(".gPFEn")?.href ||
+      "";
     const horario = elementoNoticia.querySelector(".hvbAAd")?.innerText || "";
 
     noticias.push({ titulo, link, horario });
   }
 
+  /**
+   * Sub-noticias
+   */
+  for (const elementoSubNoticia of elementosSubNoticias) {
+    const titulo = elementoSubNoticia.querySelector(".gPFEn")?.innerText || "";
+    const link = elementoSubNoticia.querySelector(".gPFEn")?.href || "";
+    const horario =
+      elementoSubNoticia.querySelector(".hvbAAd")?.innerText || "";
+
+    if (titulo.length > 0 && link.length > 0 && horario.length > 0)
+      noticias.push({ titulo, link, horario });
+  }
   return noticias;
 }
 
-const noticiasSaude = extrairNoticias(".R5wh1e");
-
-console.log(noticiasSaude);
+const dadosPrincipais = {
+  principaisNoticias: extrairPrincipaisNoticias(),
+};
+console.log(dadosPrincipais);
